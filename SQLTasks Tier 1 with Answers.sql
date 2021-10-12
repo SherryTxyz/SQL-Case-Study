@@ -113,7 +113,16 @@ ORDER BY Cost DESC;
 
 /* Q9: This time, produce the same result as in Q8, but using a subquery. */
 
-Need help with this.
+SELECT a.name, a.member, a.Cost
+FROM (SELECT Facilities.name, CONCAT_WS(' ', Members.firstname, Members.surname) AS member, 
+	CASE WHEN Bookings.memid = 0 THEN Bookings.slots * Facilities.guestcost
+	ELSE Bookings.slots * Facilities.membercost
+	END Cost
+FROM Bookings LEFT JOIN (Facilities, Members)
+                 ON (Facilities.facid = Bookings.facid AND Members.memid = Bookings.memid)
+WHERE DATE(Bookings.starttime) = '2012-09-14')as a
+WHERE Cost > 30
+ORDER BY Cost DESC;
 
 
 
